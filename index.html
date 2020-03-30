@@ -133,7 +133,7 @@
           .filter(li => {
             return this.map.has(li);
           })
-          .map(li => {
+          .map(li => {  //array.map()方法
             return `<span>${li.querySelector("span").innerHTML}</span>`;
           })
           .join(" ");
