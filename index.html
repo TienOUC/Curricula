@@ -95,8 +95,8 @@
     class Lesson {
       constructor() {
         this.lis = document.querySelectorAll("ul>li");
-        this.countElem = document.getElementById("count");
-        this.listElem = document.getElementById("lists");
+        this.countElem = document.getElementById("count"); //课程数统计
+        this.listElem = document.getElementById("lists");  //课程名集合
         // console.log(this.lis);
         this.map = new WeakMap();
       }
@@ -105,14 +105,14 @@
         this.lis.forEach(li => {
           li.querySelector("a").addEventListener("click", event => {
             const a = event.target;
-            const state = li.getAttribute("select");
+            const state = li.getAttribute("select"); //为选中的课程添加select属性
             if (state) {
               li.removeAttribute("select");
               this.map.delete(li);
               a.innerHTML = "+";
               a.style.backgroundColor = "green";
             } else {
-              this.map.set(li);
+              this.map.set(li);  //将标记的li压入map( WeakMap 弱引用可以释放没有被引用的对象所占的内存 )
               li.setAttribute("select", true);
               a.innerHTML = "-";
               a.style.backgroundColor = "red";
@@ -121,13 +121,13 @@
           });
         });
       }
-
+      //根据标记的li来统计已选课程
       count() {
         return [...this.lis].reduce((count, li) => {
           return (count += this.map.has(li) ? 1 : 0);
         }, 0);
       }
-
+      //过滤map里的li
       lists() {
         return [...this.lis]
           .filter(li => {
@@ -138,7 +138,7 @@
           })
           .join(" ");
       }
-
+      //渲染
       render() {
         this.countElem.innerHTML = `已选${this.count()}门课`;
         this.listElem.innerHTML = this.lists();
